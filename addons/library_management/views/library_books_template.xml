@@ -1,27 +1,509 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
+    <!-- Improved My Books Template with Claude Theme -->
+    <template id="library_my_books_template" name="My Books">
+        <html>
+            <head>
+                <meta charset="UTF-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                <title>My Books - Library Portal</title>
+                <style>
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
+                        background: #f7f3ed;
+                        color: #2a2520;
+                        line-height: 1.6;
+                        min-height: 100vh;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    
+                    /* Header Styles */
+                    .header {
+                        background: #2a2520;
+                        color: #f7f3ed;
+                        padding: 1rem 2rem;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    }
+                    
+                    .header-content {
+                        max-width: 1400px;
+                        margin: 0 auto;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    
+                    .logo {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        text-decoration: none;
+                        color: #f7f3ed;
+                    }
+                    
+                    .logo-icon {
+                        width: 32px;
+                        height: 32px;
+                        background: #c89b7b;
+                        border-radius: 6px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 18px;
+                    }
+                    
+                    .nav-menu {
+                        display: flex;
+                        gap: 2rem;
+                        list-style: none;
+                    }
+                    
+                    .nav-menu a {
+                        color: #f7f3ed;
+                        text-decoration: none;
+                        font-size: 0.95rem;
+                        transition: color 0.2s;
+                    }
+                    
+                    .nav-menu a:hover {
+                        color: #c89b7b;
+                    }
+                    
+                    .nav-menu a.active {
+                        color: #c89b7b;
+                        font-weight: 500;
+                    }
+                    
+                    /* Main Content */
+                    .main-content {
+                        flex: 1;
+                        max-width: 1400px;
+                        width: 100%;
+                        margin: 0 auto;
+                        padding: 3rem 2rem;
+                    }
+                    
+                    .page-header {
+                        margin-bottom: 3rem;
+                    }
+                    
+                    .page-title {
+                        font-size: 2.5rem;
+                        font-weight: 600;
+                        margin-bottom: 0.5rem;
+                        color: #2a2520;
+                    }
+                    
+                    .page-subtitle {
+                        font-size: 1rem;
+                        color: #6b5f53;
+                    }
+                    
+                    /* Cards Grid */
+                    .card-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                        gap: 2rem;
+                        margin-bottom: 3rem;
+                    }
+                    
+                    .card {
+                        background: #ffffff;
+                        border: 1px solid #e6ded4;
+                        border-radius: 12px;
+                        overflow: hidden;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                    }
+                    
+                    .card:hover {
+                        transform: translateY(-4px);
+                        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+                    }
+                    
+                    .card-image {
+                        width: 100%;
+                        height: 240px;
+                        background: linear-gradient(135deg, #eee7df 0%, #ddd4c9 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    
+                    .card-image img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                    
+                    .no-cover-text {
+                        color: #8b7f73;
+                        font-size: 0.75rem;
+                        text-transform: uppercase;
+                        letter-spacing: 1.5px;
+                        font-weight: 500;
+                    }
+                    
+                    .card-body {
+                        padding: 1.25rem;
+                    }
+                    
+                    .card-title {
+                        font-size: 1.25rem;
+                        font-weight: 600;
+                        margin-bottom: 0.75rem;
+                        color: #2a2520;
+                        line-height: 1.4;
+                    }
+                    
+                    .card-meta {
+                        font-size: 0.875rem;
+                        color: #6b5f53;
+                        margin-bottom: 0.5rem;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+                    
+                    .card-meta-icon {
+                        color: #8b7f73;
+                    }
+                    
+                    /* Empty State */
+                    .no-books {
+                        text-align: center;
+                        padding: 4rem 2rem;
+                        background: #ffffff;
+                        border: 1px solid #e6ded4;
+                        border-radius: 12px;
+                        margin: 2rem 0;
+                    }
+                    
+                    .no-books-icon {
+                        font-size: 4rem;
+                        color: #c89b7b;
+                        margin-bottom: 1rem;
+                    }
+                    
+                    .no-books p {
+                        font-size: 1.125rem;
+                        color: #6b5f53;
+                        margin-bottom: 0.5rem;
+                    }
+                    
+                    .no-books-subtitle {
+                        font-size: 0.875rem;
+                        color: #8b7f73;
+                    }
+                    
+                    /* Footer Styles */
+                    .footer {
+                        background: #2a2520;
+                        color: #f7f3ed;
+                        padding: 2.5rem 2rem 1.5rem;
+                        margin-top: auto;
+                    }
+                    
+                    .footer-content {
+                        max-width: 1400px;
+                        margin: 0 auto;
+                    }
+                    
+                    .footer-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                        gap: 2rem;
+                        margin-bottom: 2rem;
+                    }
+                    
+                    .footer-section h3 {
+                        font-size: 1rem;
+                        font-weight: 600;
+                        margin-bottom: 1rem;
+                        color: #c89b7b;
+                    }
+                    
+                    .footer-links {
+                        list-style: none;
+                    }
+                    
+                    .footer-links li {
+                        margin-bottom: 0.5rem;
+                    }
+                    
+                    .footer-links a {
+                        color: #d4cfc8;
+                        text-decoration: none;
+                        font-size: 0.875rem;
+                        transition: color 0.2s;
+                    }
+                    
+                    .footer-links a:hover {
+                        color: #c89b7b;
+                    }
+                    
+                    .footer-description {
+                        font-size: 0.875rem;
+                        color: #d4cfc8;
+                        line-height: 1.6;
+                    }
+                    
+                    .footer-bottom {
+                        border-top: 1px solid #4a4540;
+                        padding-top: 1.5rem;
+                        text-align: center;
+                    }
+                    
+                    .footer-bottom p {
+                        font-size: 0.875rem;
+                        color: #8b7f73;
+                    }
+                    
+                    /* Responsive Design */
+                    @media (max-width: 768px) {
+                        .header-content {
+                            flex-direction: column;
+                            gap: 1rem;
+                        }
+                        
+                        .nav-menu {
+                            flex-wrap: wrap;
+                            justify-content: center;
+                            gap: 1rem;
+                        }
+                        
+                        .main-content {
+                            padding: 2rem 1rem;
+                        }
+                        
+                        .page-title {
+                            font-size: 2rem;
+                        }
+                        
+                        .card-grid {
+                            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                            gap: 1.5rem;
+                        }
+                        
+                        .footer-grid {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                <!-- Header -->
+                <header class="header">
+                    <div class="header-content">
+                        <a href="/mybooks" class="logo">
+                            <div class="logo-icon">📚</div>
+                            <span>Library Portal</span>
+                        </a>
+                        <nav>
+                            <ul class="nav-menu">
+                                <li><a href="/" class="active">Home</a></li>
+                                <li><a href="/mybooks">My Books</a></li>
+                                <li><a href="/library/books">All Books</a></li>
+                                <li><a href="/my/account">Account</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <div class="page-header">
+                        <h1 class="page-title">My Books</h1>
+                        <p class="page-subtitle">
+                            Books where <t t-esc="partner.name"/> is listed as an author.
+                        </p>
+                    </div>
+
+                    <t t-if="books">
+                        <div class="card-grid">
+                            <t t-foreach="books" t-as="book">
+                                <article class="card">
+                                    <div class="card-image">
+                                        <t t-if="book.image">
+                                            <img t-att-src="image_data_uri(book.image)" t-att-alt="book.title"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="no-cover-text">No Cover</span>
+                                        </t>
+                                    </div>
+                                    <div class="card-body">
+                                        <h2 class="card-title">
+                                            <t t-esc="book.title"/>
+                                        </h2>
+                                        <div class="card-meta">
+                                            <span class="card-meta-icon">✍️</span>
+                                            <span>
+                                                <t t-if="book.author_ids">
+                                                    <t t-esc="', '.join(book.author_ids.mapped('name'))"/>
+                                                </t>
+                                                <t t-else="">Unknown Author</t>
+                                            </span>
+                                        </div>
+                                        <div class="card-meta">
+                                            <span class="card-meta-icon">📅</span>
+                                            <span><t t-esc="book.date_published and book.date_published.strftime('%B %d, %Y') or 'Date not available'"/></span>
+                                        </div>
+                                        <div class="card-meta">
+                                            <span class="card-meta-icon">🏢</span>
+                                            <span><t t-esc="book.publisher_id.name or 'Unknown Publisher'"/></span>
+                                        </div>
+                                    </div>
+                                </article>
+                            </t>
+                        </div>
+                    </t>
+                    
+                    <t t-else="">
+                        <div class="no-books">
+                            <div class="no-books-icon">📚</div>
+                            <p>No books found</p>
+                            <p class="no-books-subtitle">You haven't authored any books yet.</p>
+                        </div>
+                    </t>
+                </main>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    <div class="footer-content">
+                        <div class="footer-grid">
+                            <div class="footer-section">
+                                <h3>About Library</h3>
+                                <p class="footer-description">
+                                    Your comprehensive library management system for tracking books, 
+                                    authors, and publications. Access your collection anywhere, anytime.
+                                </p>
+                            </div>
+                            
+                            <div class="footer-section">
+                                <h3>Quick Links</h3>
+                                <ul class="footer-links">
+                                    <li><a href="/">Home</a></li>
+                                    <li><a href="/mybooks">My Books</a></li>
+                                    <li><a href="/library/books">Browse All Books</a></li>
+                                    <li><a href="/my/account">My Account</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="footer-section">
+                                <h3>Support</h3>
+                                <ul class="footer-links">
+                                    <li><a href="/contactus">Contact Us</a></li>
+                                    <li><a href="/help">Help Center</a></li>
+                                    <li><a href="/faq">FAQ</a></li>
+                                    <li><a href="/privacy">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="footer-section">
+                                <h3>Connect</h3>
+                                <ul class="footer-links">
+                                    <li><a href="#">Email: library@example.com</a></li>
+                                    <li><a href="#">Phone: (123) 456-7890</a></li>
+                                    <li><a href="#">Address: 123 Library St</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="footer-bottom">
+                            <p>© 2026 Library Management System. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            </body>
+        </html>
+    </template>
+    
+    <!-- Basic Books Template (for /library/books route) -->
     <template id="library_books_template" name="Library Books">
         <html>
             <head>
                 <title>Library Books</title>
                 <style>
-                  
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 40px;
+                        background-color: #f5f5f5;
+                    }
+                    h1 {
+                        color: #333;
+                        border-bottom: 3px solid #7c7bad;
+                        padding-bottom: 10px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        background-color: white;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                    }
+                    th {
+                        background-color: #7c7bad;
+                        color: white;
+                        padding: 12px;
+                        text-align: left;
+                    }
+                    td {
+                        padding: 10px;
+                        border-bottom: 1px solid #ddd;
+                    }
+                    tr:hover {
+                        background-color: #f0f0f0;
+                    }
+                    .no-books {
+                        text-align: center;
+                        padding: 20px;
+                        color: #666;
+                    }
+                    .authors {
+                        color: #555;
+                    }
                 </style>
             </head>
             <body>
-                <h1>Books</h1>
+                <h1>Library Books</h1>
                 
                 <t t-if="books">
-                    <div class="book-list">
-                        <t t-foreach="books" t-as="book">
-                            <div class="book-item">
-                                <t t-esc="book.title"/>, 
-                                <t t-esc="book.date_published and book.date_published.strftime('%m/%d/%Y') or 'N/A'"/>, 
-                                <t t-esc="book.publisher_id.name or 'Unknown Publisher'"/>
-                            </div>
-                        </t>
-                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Book Name</th>
+                                <th>Authors</th>
+                                <th>Date Published</th>
+                                <th>Publisher</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="books" t-as="book">
+                                <tr>
+                                    <td><t t-esc="book.title"/></td>
+                                    <td class="authors">
+                                        <t t-if="book.author_ids">
+                                            <t t-esc="', '.join(book.author_ids.mapped('name'))"/>
+                                        </t>
+                                        <t t-else="">N/A</t>
+                                    </td>
+                                    <td><t t-esc="book.date_published or 'N/A'"/></td>
+                                    <td><t t-esc="book.publisher_id.name or 'N/A'"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
                 </t>
                 
                 <t t-else="">
@@ -30,109 +512,6 @@
                     </div>
                 </t>
                 
-            </body>
-        </html>
-    </template>
-
-    <template id="library_my_books_template" name="My Books">
-        <html>
-            <head>
-                <title>My Books</title>
-                <style>
-                    body {
-                        font-family: Georgia, "Times New Roman", serif;
-                        margin: 32px;
-                        background: #f7f3ed;
-                        color: #2a2520;
-                    }
-                    .page-title {
-                        font-size: 32px;
-                        margin-bottom: 8px;
-                    }
-                    .page-subtitle {
-                        color: #5b5147;
-                        margin-bottom: 24px;
-                    }
-                    .card-grid {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-                        gap: 20px;
-                    }
-                    .card {
-                        background: #fff;
-                        border: 1px solid #e6ded4;
-                        border-radius: 10px;
-                        overflow: hidden;
-                        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-                    }
-                    .card-image {
-                        width: 100%;
-                        height: 180px;
-                        background: #eee7df;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: #8b7f73;
-                        font-size: 12px;
-                        text-transform: uppercase;
-                        letter-spacing: 1px;
-                    }
-                    .card-image img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-                    .card-body {
-                        padding: 14px 16px 18px;
-                    }
-                    .card-title {
-                        font-size: 18px;
-                        margin: 0 0 6px;
-                    }
-                    .card-meta {
-                        font-size: 13px;
-                        color: #6b5f53;
-                    }
-                </style>
-            </head>
-            <body>
-                <h1 class="page-title">My Books</h1>
-                <div class="page-subtitle">
-                    Books where <t t-esc="partner.name"/> is listed as an author.
-                </div>
-
-                <t t-if="books">
-                    <div class="card-grid">
-                        <t t-foreach="books" t-as="book">
-                            <div class="card">
-                                <div class="card-image">
-                                    <t t-if="book.image">
-                                        <img t-att-src="image_data_uri(book.image)" alt="Cover"/>
-                                    </t>
-                                    <t t-else="">
-                                        No Cover
-                                    </t>
-                                </div>
-                                <div class="card-body">
-                                    <div class="card-title">
-                                        <t t-esc="book.title"/>
-                                    </div>
-                                    <div class="card-meta">
-                                        <t t-esc="book.date_published and book.date_published.strftime('%m/%d/%Y') or 'N/A'"/>
-                                    </div>
-                                    <div class="card-meta">
-                                        <t t-esc="book.publisher_id.name or 'Unknown Publisher'"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </t>
-                    </div>
-                </t>
-                <t t-else="">
-                    <div class="no-books">
-                        <p>No books linked to your contact.</p>
-                    </div>
-                </t>
             </body>
         </html>
     </template>
