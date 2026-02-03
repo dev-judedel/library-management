@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <!-- Add My Book field after the Tags field -->
             <xpath expr="//field[@name='category_id']" position="after">
-                <field name="my_book_ids" string="My Book" nolabel="1">
+                <field name="my_book_ids" string="My Book">
                     <list string="My Book">
                         <field name="title"/>
                         <field name="author_ids" widget="many2many_tags"/>
