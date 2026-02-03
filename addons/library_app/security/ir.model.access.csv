@@ -1,3 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_library_app_user,library.app.user,model_library_app,base.group_user,1,1,1,1
-access_library_app_public,library.app.public,model_library_app,,1,0,0,0

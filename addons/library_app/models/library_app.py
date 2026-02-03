@@ -36,19 +36,19 @@ class LibraryApp(models.Model):
 
     # Validation method for ISBN
     def _validate_isbn(self):
-        """Validate ISBN format and length"""
+        """Validate ISBN format and length (only if ISBN is provided)"""
         for record in self:
-            # Check if ISBN is empty
+            # ISBN is optional — skip validation if empty
             if not record.isbn:
-                raise ValidationError(f"Please provide an ISBN for {record.title}")
-            
+                continue
+
             # Check if ISBN contains only digits
             if not record.isbn.isdigit():
-                raise ValidationError("ISBN must be a digit")
-            
+                raise ValidationError("ISBN must contain only digits.")
+
             # Check if ISBN is exactly 13 digits
             if len(record.isbn) != 13:
-                raise ValidationError("ISBN must be 13 digit")
+                raise ValidationError("ISBN must be exactly 13 digits.")
 
     # Validation for required title
     @api.constrains('title')
@@ -61,16 +61,19 @@ class LibraryApp(models.Model):
     # Override create to validate ISBN on save
     @api.model_create_multi
     def create(self, vals_list):
-        """Override create to validate ISBN"""
+        """Override create to validate ISBN only when isbn is provided"""
         records = super(LibraryApp, self).create(vals_list)
-        for record in records:
-            record._validate_isbn()
+        # Only validate records that actually have an isbn value
+        records_with_isbn = records.filtered(lambda r: r.isbn)
+        if records_with_isbn:
+            records_with_isbn._validate_isbn()
         return records
 
     # Override write to validate ISBN on update
     def write(self, vals):
-        """Override write to validate ISBN"""
+        """Override write to validate ISBN only when isbn is being changed"""
         result = super(LibraryApp, self).write(vals)
-        for record in self:
-            record._validate_isbn()
+        # Only re-validate if isbn is part of the update
+        if 'isbn' in vals:
+            self._validate_isbn()
         return result

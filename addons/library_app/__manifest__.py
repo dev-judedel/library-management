@@ -14,7 +14,7 @@
         * Display books on website
     """,
     'author': 'Your Name',
-    'website': 'https://www.example.com',
+    'website': '',
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',

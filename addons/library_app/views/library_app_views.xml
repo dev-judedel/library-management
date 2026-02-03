@@ -79,10 +79,11 @@
                 <field name="isbn"/>
                 
                 <!-- Filters Section -->
-                <filter string="Active Books" name="filter_active" 
-                        domain="[('active', '=', True)]"/>
-                <filter string="Inactive Books" name="filter_inactive" 
-                        domain="[('active', '=', False)]"/>
+                <!-- "Inactive Books" must set active_test=False so Odoo
+                     stops silently excluding archived records -->
+                <filter string="Inactive Books" name="filter_inactive"
+                        domain="[('active', '=', False)]"
+                        context="{'active_test': False}"/>
                 <separator/>
                 
                 <!-- Group By Section -->
