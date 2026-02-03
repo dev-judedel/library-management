@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Top Menu -->
+    <menuitem id="menu_library_root" 
+              name="Library" 
+              sequence="10"/>
+
+    <!-- Sub Menu -->
+    <menuitem id="menu_library_management" 
+              name="Books" 
+              parent="menu_library_root" 
+              action="action_library_management" 
+              sequence="10"/>
+
+</odoo>

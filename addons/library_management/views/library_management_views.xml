@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Form View -->
+    <record id="view_library_management_form" model="ir.ui.view">
+        <field name="name">library.management.form</field>
+        <field name="model">library.management</field>
+        <field name="arch" type="xml">
+            <form string="Library Book">
+                <header>
+                    <button name="action_check_isbn" 
+                            string="CHECK ISBN" 
+                            type="object" 
+                            class="btn-primary"/>
+                </header>
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <group>
+                        <group>
+                            <field name="title" placeholder="Enter book title"/>
+                            <field name="author_ids" widget="many2many_tags"/>
+                            <field name="publisher_id"/>
+                        </group>
+                        <group>
+                            <field name="isbn" placeholder="Enter 13-digit ISBN"/>
+                            <field name="active"/>
+                            <field name="date_published"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_library_management_tree" model="ir.ui.view">
+        <field name="name">library.management.tree</field>
+        <field name="model">library.management</field>
+        <field name="arch" type="xml">
+            <list string="Library Books">
+                <field name="title"/>
+                <field name="author_ids" widget="many2many_tags"/>
+                <field name="publisher_id"/>
+                <field name="date_published"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View with Filters -->
+    <record id="view_library_management_search" model="ir.ui.view">
+        <field name="name">library.management.search</field>
+        <field name="model">library.management</field>
+        <field name="arch" type="xml">
+            <search string="Search Books">
+                <field name="title"/>
+                <field name="author_ids"/>
+                <field name="publisher_id"/>
+                <field name="isbn"/>
+                
+                <!-- Filters for Active/Inactive -->
+                <filter string="Active" name="filter_active" 
+                        domain="[('active', '=', True)]"/>
+                <filter string="Inactive" name="filter_inactive" 
+                        domain="[('active', '=', False)]"/>
+                
+                <group expand="0" string="Group By">
+                    <filter string="Publisher" name="group_publisher" 
+                            context="{'group_by': 'publisher_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_library_management" model="ir.actions.act_window">
+        <field name="name">Library Books</field>
+        <field name="res_model">library.management</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_library_management_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first book record
+            </p>
+        </field>
+    </record>
+
+</odoo>
