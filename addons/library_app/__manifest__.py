@@ -18,8 +18,8 @@
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
-        'views/library_management_views.xml',
-        'views/library_management_menus.xml',
+        'views/library_app_views.xml',
+        'views/library_app_menus.xml',
         'views/library_books_template.xml',
     ],
     'installable': True,
@@ -27,4 +27,3 @@
     'auto_install': False,
     'license': 'LGPL-3',
 }
-

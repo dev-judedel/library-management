@@ -4,9 +4,9 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
-class LibraryManagement(models.Model):
-    _name = 'library.management'
-    _description = 'Library Management'
+class LibraryApp(models.Model):
+    _name = 'library.app'
+    _description = 'Library App'
     _rec_name = 'title'
 
     # Fields as per requirements
@@ -62,7 +62,7 @@ class LibraryManagement(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         """Override create to validate ISBN"""
-        records = super(LibraryManagement, self).create(vals_list)
+        records = super(LibraryApp, self).create(vals_list)
         for record in records:
             if record.isbn:  # Only validate if ISBN is provided
                 record._validate_isbn()
@@ -71,7 +71,7 @@ class LibraryManagement(models.Model):
     # Override write to validate ISBN on update
     def write(self, vals):
         """Override write to validate ISBN"""
-        result = super(LibraryManagement, self).write(vals)
+        result = super(LibraryApp, self).write(vals)
         if 'isbn' in vals:
             for record in self:
                 if record.isbn:  # Only validate if ISBN is provided

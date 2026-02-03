@@ -7,10 +7,10 @@
               sequence="10"/>
 
     <!-- Sub Menu -->
-    <menuitem id="menu_library_management" 
+    <menuitem id="menu_library_app" 
               name="Books" 
               parent="menu_library_root" 
-              action="action_library_management" 
+              action="action_library_app" 
               sequence="10"/>
 
 </odoo>

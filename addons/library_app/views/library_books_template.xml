@@ -14,19 +14,39 @@
                             class="btn-primary"/>
                 </header>
                 <sheet>
-                    <field name="image" widget="image" class="oe_avatar"/>
                     <group>
                         <group>
-                            <field name="title" placeholder="Enter book title"/>
-                            <field name="author_ids" widget="many2many_tags"/>
-                            <field name="publisher_id"/>
+                            <field name="title"
+                                placeholder="Enter book title"
+                                help="Type the full title of the book."/>
+
+                            <field name="author_ids"
+                                widget="many2many_tags"
+                                help="Select one or more authors for this book."/>
+
+                            <field name="publisher_id"
+                                help="Choose the publisher of the book."/>
+
+                            <field name="date_published"
+                                help="Enter the publication date of the book."/>
                         </group>
+
                         <group>
-                            <field name="isbn" placeholder="Enter 13-digit ISBN"/>
-                            <field name="active"/>
-                            <field name="date_published"/>
+                            <field name="isbn"
+                                placeholder="Enter 13-digit ISBN"
+                                help="Enter the ISBN number (13 digits)."/>
+
+                            <field name="active"
+                                help="Uncheck this to archive the book record."/>
+
+                            <field name="image"
+                                string="Cover"
+                                widget="image"
+                                options="{'size': [400, 400], 'preview_image': 'image'}"
+                                help="Upload the book cover image."/>
                         </group>
                     </group>
+
                 </sheet>
             </form>
         </field>
@@ -52,21 +72,24 @@
         <field name="model">library.management</field>
         <field name="arch" type="xml">
             <search string="Search Books">
+                <!-- Search Fields -->
                 <field name="title"/>
                 <field name="author_ids"/>
                 <field name="publisher_id"/>
                 <field name="isbn"/>
                 
-                <!-- Filters for Active/Inactive -->
-                <filter string="Active" name="filter_active" 
+                <!-- Filters Section -->
+                <filter string="Active Books" name="filter_active" 
                         domain="[('active', '=', True)]"/>
-                <filter string="Inactive" name="filter_inactive" 
+                <filter string="Inactive Books" name="filter_inactive" 
                         domain="[('active', '=', False)]"/>
+                <separator/>
                 
-                <group expand="0" string="Group By">
-                    <filter string="Publisher" name="group_publisher" 
-                            context="{'group_by': 'publisher_id'}"/>
-                </group>
+                <!-- Group By Section -->
+                <filter string="Publisher" name="group_publisher" 
+                        context="{'group_by': 'publisher_id'}"/>
+                <filter string="Publication Date" name="group_date_published" 
+                        context="{'group_by': 'date_published'}"/>
             </search>
         </field>
     </record>
