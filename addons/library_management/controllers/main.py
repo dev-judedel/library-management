@@ -16,3 +16,15 @@ class LibraryController(http.Controller):
         return request.render('library_management.library_books_template', {
             'books': books,
         })
+
+    @http.route('/mybooks', type='http', auth='user', website=True)
+    def my_books(self, **kwargs):
+        """Display books authored by the logged-in user's contact"""
+        partner = request.env.user.partner_id
+        books = request.env['library.management'].sudo().search([
+            ('author_ids', 'in', partner.id),
+        ])
+        return request.render('library_management.library_my_books_template', {
+            'books': books,
+            'partner': partner,
+        })

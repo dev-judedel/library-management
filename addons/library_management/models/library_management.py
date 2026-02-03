@@ -11,12 +11,19 @@ class LibraryManagement(models.Model):
 
     # Fields as per requirements
     image = fields.Image(string='Cover')
-    title = fields.Char(string='Title')
+    title = fields.Char(string='Title', required=True)
     isbn = fields.Char(string='ISBN')
     active = fields.Boolean(string='Active', default=True)
     date_published = fields.Date(string='Date Published')
     publisher_id = fields.Many2one('res.partner', string='Publisher')
-    author_ids = fields.Many2many('res.partner', string='Authors')
+    author_ids = fields.Many2many(
+        'res.partner',
+        'library_management_author_rel',
+        'book_id',
+        'partner_id',
+        string='Authors',
+    )
+    webpage_link = fields.Char(string='Webpage Link')
 
     # Method to check ISBN (called by button)
     def action_check_isbn(self):

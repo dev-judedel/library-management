@@ -39,6 +39,10 @@
                             <field name="active"
                                 help="Uncheck this to archive the book record."/>
 
+                            <field name="webpage_link"
+                                placeholder="e.g. https://en.wikipedia.org/wiki/PHP"
+                                help="Enter the Wikipedia or reference webpage link for this book."/>
+
                             <field name="image"
                                 string="Cover"
                                 widget="image"

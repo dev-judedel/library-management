@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit res.partner form to add "My Book" field -->
+    <record id="view_res_partner_my_book_form" model="ir.ui.view">
+        <field name="name">res.partner.my_book.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert after the "Tags" field -->
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="my_book" widget="many2many_list" readonly="1">
+                    <list>
+                        <field name="title"/>
+                        <field name="author_ids" widget="many2many_tags"/>
+                        <field name="publisher_id"/>
+                        <field name="date_published"/>
+                    </list>
+                </field>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
