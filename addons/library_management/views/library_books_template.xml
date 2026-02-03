@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <template id="library_books_template" name="Library Books">
+        <html>
+            <head>
+                <title>Library Books</title>
+                <style>
+                  
+                </style>
+            </head>
+            <body>
+                <h1>Books</h1>
+                
+                <t t-if="books">
+                    <div class="book-list">
+                        <t t-foreach="books" t-as="book">
+                            <div class="book-item">
+                                <t t-esc="book.title"/>, 
+                                <t t-esc="book.date_published and book.date_published.strftime('%m/%d/%Y') or 'N/A'"/>, 
+                                <t t-esc="book.publisher_id.name or 'Unknown Publisher'"/>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+                
+                <t t-else="">
+                    <div class="no-books">
+                        <p>No books available in the library.</p>
+                    </div>
+                </t>
+                
+            </body>
+        </html>
+    </template>
+    
+</odoo>

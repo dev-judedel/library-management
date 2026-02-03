@@ -4,14 +4,14 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
-class LibraryApp(models.Model):
-    _name = 'library.app'
-    _description = 'Library App'
+class LibraryManagement(models.Model):
+    _name = 'library.management'
+    _description = 'Library Management'
     _rec_name = 'title'
 
     # Fields as per requirements
-    image = fields.Image(string='Book Cover')
-    title = fields.Char(string='Title', required=True)
+    image = fields.Image(string='Cover')
+    title = fields.Char(string='Title')
     isbn = fields.Char(string='ISBN')
     active = fields.Boolean(string='Active', default=True)
     date_published = fields.Date(string='Date Published')
@@ -36,19 +36,19 @@ class LibraryApp(models.Model):
 
     # Validation method for ISBN
     def _validate_isbn(self):
-        """Validate ISBN format and length (only if ISBN is provided)"""
+        """Validate ISBN format and length"""
         for record in self:
-            # ISBN is optional — skip validation if empty
+            # Check if ISBN is empty
             if not record.isbn:
-                continue
-
+                raise ValidationError(f"Please provide an ISBN for {record.title}")
+            
             # Check if ISBN contains only digits
             if not record.isbn.isdigit():
-                raise ValidationError("ISBN must contain only digits.")
-
+                raise ValidationError("ISBN must be a digit")
+            
             # Check if ISBN is exactly 13 digits
             if len(record.isbn) != 13:
-                raise ValidationError("ISBN must be exactly 13 digits.")
+                raise ValidationError("ISBN must be 13 digit")
 
     # Validation for required title
     @api.constrains('title')
@@ -61,19 +61,19 @@ class LibraryApp(models.Model):
     # Override create to validate ISBN on save
     @api.model_create_multi
     def create(self, vals_list):
-        """Override create to validate ISBN only when isbn is provided"""
-        records = super(LibraryApp, self).create(vals_list)
-        # Only validate records that actually have an isbn value
-        records_with_isbn = records.filtered(lambda r: r.isbn)
-        if records_with_isbn:
-            records_with_isbn._validate_isbn()
+        """Override create to validate ISBN"""
+        records = super(LibraryManagement, self).create(vals_list)
+        for record in records:
+            if record.isbn:  # Only validate if ISBN is provided
+                record._validate_isbn()
         return records
 
     # Override write to validate ISBN on update
     def write(self, vals):
-        """Override write to validate ISBN only when isbn is being changed"""
-        result = super(LibraryApp, self).write(vals)
-        # Only re-validate if isbn is part of the update
+        """Override write to validate ISBN"""
+        result = super(LibraryManagement, self).write(vals)
         if 'isbn' in vals:
-            self._validate_isbn()
+            for record in self:
+                if record.isbn:  # Only validate if ISBN is provided
+                    record._validate_isbn()
         return result

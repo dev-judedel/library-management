@@ -2,9 +2,9 @@
 <odoo>
     
     <!-- Form View -->
-    <record id="view_library_app_form" model="ir.ui.view">
-        <field name="name">library.app.form</field>
-        <field name="model">library.app</field>
+    <record id="view_library_management_form" model="ir.ui.view">
+        <field name="name">library.management.form</field>
+        <field name="model">library.management</field>
         <field name="arch" type="xml">
             <form string="Library Book">
                 <header>
@@ -53,9 +53,9 @@
     </record>
 
     <!-- Tree View -->
-    <record id="view_library_app_tree" model="ir.ui.view">
-        <field name="name">library.app.tree</field>
-        <field name="model">library.app</field>
+    <record id="view_library_management_tree" model="ir.ui.view">
+        <field name="name">library.management.tree</field>
+        <field name="model">library.management</field>
         <field name="arch" type="xml">
             <list string="Library Books">
                 <field name="title"/>
@@ -67,9 +67,9 @@
     </record>
 
     <!-- Search View with Filters -->
-    <record id="view_library_app_search" model="ir.ui.view">
-        <field name="name">library.app.search</field>
-        <field name="model">library.app</field>
+    <record id="view_library_management_search" model="ir.ui.view">
+        <field name="name">library.management.search</field>
+        <field name="model">library.management</field>
         <field name="arch" type="xml">
             <search string="Search Books">
                 <!-- Search Fields -->
@@ -79,11 +79,10 @@
                 <field name="isbn"/>
                 
                 <!-- Filters Section -->
-                <!-- "Inactive Books" must set active_test=False so Odoo
-                     stops silently excluding archived records -->
-                <filter string="Inactive Books" name="filter_inactive"
-                        domain="[('active', '=', False)]"
-                        context="{'active_test': False}"/>
+                <filter string="Active Books" name="filter_active" 
+                        domain="[('active', '=', True)]"/>
+                <filter string="Inactive Books" name="filter_inactive" 
+                        domain="[('active', '=', False)]"/>
                 <separator/>
                 
                 <!-- Group By Section -->
@@ -96,11 +95,11 @@
     </record>
 
     <!-- Action -->
-    <record id="action_library_app" model="ir.actions.act_window">
+    <record id="action_library_management" model="ir.actions.act_window">
         <field name="name">Library Books</field>
-        <field name="res_model">library.app</field>
+        <field name="res_model">library.management</field>
         <field name="view_mode">list,form</field>
-        <field name="search_view_id" ref="view_library_app_search"/>
+        <field name="search_view_id" ref="view_library_management_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your first book record

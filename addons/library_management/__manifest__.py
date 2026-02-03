@@ -14,12 +14,12 @@
         * Display books on website
     """,
     'author': 'Your Name',
-    'website': '',
+    'website': 'https://www.example.com',
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
-        'views/library_app_views.xml',
-        'views/library_app_menus.xml',
+        'views/library_management_views.xml',
+        'views/library_management_menus.xml',
         'views/library_books_template.xml',
     ],
     'installable': True,
@@ -27,3 +27,4 @@
     'auto_install': False,
     'license': 'LGPL-3',
 }
+
