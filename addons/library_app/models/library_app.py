@@ -64,16 +64,13 @@ class LibraryApp(models.Model):
         """Override create to validate ISBN"""
         records = super(LibraryApp, self).create(vals_list)
         for record in records:
-            if record.isbn:  # Only validate if ISBN is provided
-                record._validate_isbn()
+            record._validate_isbn()
         return records
 
     # Override write to validate ISBN on update
     def write(self, vals):
         """Override write to validate ISBN"""
         result = super(LibraryApp, self).write(vals)
-        if 'isbn' in vals:
-            for record in self:
-                if record.isbn:  # Only validate if ISBN is provided
-                    record._validate_isbn()
+        for record in self:
+            record._validate_isbn()
         return result
