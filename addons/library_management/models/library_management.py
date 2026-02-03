@@ -23,7 +23,7 @@ class LibraryManagement(models.Model):
         'partner_id',
         string='Authors',
     )
-    webpage_link = fields.Char(string='Webpage Link')
+    webpage_link = fields.Char(string='Wikipage Link')
 
     # Method to check ISBN (called by button)
     def action_check_isbn(self):
