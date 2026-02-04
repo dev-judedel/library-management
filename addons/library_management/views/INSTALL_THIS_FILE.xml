@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Enhanced Browse Books Template with Search, Filter, Categories & Reading List -->
+    <template id="library_books_enhanced_template" name="Browse Books - Enhanced">
+        <html>
+            <head>
+                <meta charset="UTF-8"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                <title>Browse Books - Library Portal</title>
+                <style>
+                    * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+                    
+                    body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica', 'Arial', sans-serif;
+                        background: linear-gradient(135deg, #f5f0e8 0%, #ebe3d5 100%);
+                        background-attachment: fixed;
+                        color: #2a2520;
+                        line-height: 1.6;
+                        min-height: 100vh;
+                        display: flex;
+                        flex-direction: column;
+                    }
+                    
+                    /* Header */
+                    .header {
+                        background: linear-gradient(135deg, #2a2520 0%, #3d3530 100%);
+                        color: #f7f3ed;
+                        padding: 1rem 2rem;
+                        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+                        position: sticky;
+                        top: 0;
+                        z-index: 100;
+                    }
+                    
+                    .header-content {
+                        max-width: 1600px;
+                        margin: 0 auto;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    
+                    .logo {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        font-size: 1.5rem;
+                        font-weight: 600;
+                        text-decoration: none;
+                        color: #f7f3ed;
+                    }
+                    
+                    .logo-icon {
+                        width: 36px;
+                        height: 36px;
+                        background: linear-gradient(135deg, #d4a574 0%, #c89b7b 100%);
+                        border-radius: 8px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 20px;
+                        box-shadow: 0 2px 8px rgba(200, 155, 123, 0.4);
+                    }
+                    
+                    .nav-menu {
+                        display: flex;
+                        gap: 2rem;
+                        list-style: none;
+                        align-items: center;
+                    }
+                    
+                    .nav-menu a {
+                        color: #f7f3ed;
+                        text-decoration: none;
+                        font-size: 0.95rem;
+                        transition: color 0.2s;
+                        position: relative;
+                    }
+                    
+                    .nav-menu a::after {
+                        content: '';
+                        position: absolute;
+                        bottom: -4px;
+                        left: 0;
+                        width: 0;
+                        height: 2px;
+                        background: #c89b7b;
+                        transition: width 0.3s;
+                    }
+                    
+                    .nav-menu a:hover::after {
+                        width: 100%;
+                    }
+                    
+                    .reading-list-btn {
+                        background: #c89b7b;
+                        color: #fff;
+                        padding: 0.5rem 1rem;
+                        border-radius: 8px;
+                        text-decoration: none;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        transition: all 0.2s;
+                        position: relative;
+                    }
+                    
+                    .reading-list-btn:hover {
+                        background: #b88a6a;
+                        transform: translateY(-2px);
+                    }
+                    
+                    .reading-list-badge {
+                        background: #fff;
+                        color: #c89b7b;
+                        border-radius: 50%;
+                        width: 20px;
+                        height: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 0.75rem;
+                        font-weight: bold;
+                    }
+                    
+                    /* Main Content */
+                    .main-content {
+                        flex: 1;
+                        max-width: 1600px;
+                        width: 100%;
+                        margin: 0 auto;
+                        padding: 2rem;
+                    }
+                    
+                    .page-header {
+                        margin-bottom: 2rem;
+                    }
+                    
+                    .page-title {
+                        font-size: 2.5rem;
+                        font-weight: 700;
+                        margin-bottom: 0.5rem;
+                    }
+                    
+                    .page-subtitle {
+                        font-size: 1.1rem;
+                        color: #6b5f53;
+                    }
+                    
+                    /* Search & Filter Section */
+                    .search-filter-section {
+                        background: #fff;
+                        border-radius: 16px;
+                        padding: 2rem;
+                        margin-bottom: 2rem;
+                        box-shadow: 0 4px 16px rgba(42, 37, 32, 0.08);
+                    }
+                    
+                    .search-box {
+                        margin-bottom: 1.5rem;
+                    }
+                    
+                    .search-input-wrapper {
+                        position: relative;
+                    }
+                    
+                    .search-icon {
+                        position: absolute;
+                        left: 1rem;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        font-size: 1.2rem;
+                        color: #c89b7b;
+                    }
+                    
+                    .search-input {
+                        width: 100%;
+                        padding: 0.875rem 1rem 0.875rem 3rem;
+                        border: 2px solid #e6ded4;
+                        border-radius: 12px;
+                        font-size: 1rem;
+                        transition: all 0.2s;
+                        background: #fafafa;
+                    }
+                    
+                    .search-input:focus {
+                        outline: none;
+                        border-color: #c89b7b;
+                        background: #fff;
+                    }
+                    
+                    .filter-section {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                        gap: 1rem;
+                        margin-bottom: 1rem;
+                    }
+                    
+                    .filter-group {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.5rem;
+                    }
+                    
+                    .filter-label {
+                        font-size: 0.875rem;
+                        font-weight: 600;
+                        color: #2a2520;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                    }
+                    
+                    .filter-select {
+                        padding: 0.75rem;
+                        border: 2px solid #e6ded4;
+                        border-radius: 8px;
+                        font-size: 0.95rem;
+                        background: #fafafa;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                    }
+                    
+                    .filter-select:focus {
+                        outline: none;
+                        border-color: #c89b7b;
+                        background: #fff;
+                    }
+                    
+                    .filter-actions {
+                        display: flex;
+                        gap: 1rem;
+                        align-items: center;
+                    }
+                    
+                    .btn {
+                        padding: 0.75rem 1.5rem;
+                        border: none;
+                        border-radius: 8px;
+                        font-size: 0.95rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                    }
+                    
+                    .btn-primary {
+                        background: #c89b7b;
+                        color: #fff;
+                    }
+                    
+                    .btn-primary:hover {
+                        background: #b88a6a;
+                        transform: translateY(-2px);
+                    }
+                    
+                    .btn-secondary {
+                        background: transparent;
+                        color: #6b5f53;
+                        border: 2px solid #e6ded4;
+                    }
+                    
+                    .btn-secondary:hover {
+                        border-color: #c89b7b;
+                        color: #c89b7b;
+                    }
+                    
+                    .results-info {
+                        font-size: 0.95rem;
+                        color: #6b5f53;
+                    }
+                    
+                    /* Category Tags */
+                    .category-section {
+                        margin-bottom: 2rem;
+                    }
+                    
+                    .category-tags {
+                        display: flex;
+                        gap: 0.75rem;
+                        flex-wrap: wrap;
+                    }
+                    
+                    .category-tag {
+                        padding: 0.5rem 1rem;
+                        background: #fff;
+                        border: 2px solid #e6ded4;
+                        border-radius: 20px;
+                        font-size: 0.875rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.2s;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                    }
+                    
+                    .category-tag:hover {
+                        border-color: #c89b7b;
+                        background: #c89b7b;
+                        color: #fff;
+                        transform: translateY(-2px);
+                    }
+                    
+                    .category-tag.active {
+                        background: #c89b7b;
+                        color: #fff;
+                        border-color: #c89b7b;
+                    }
+                    
+                    /* Book Cards Grid */
+                    .books-grid {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                        gap: 2rem;
+                        margin-bottom: 3rem;
+                    }
+                    
+                    .book-card {
+                        background: #fff;
+                        border: 1px solid #e6ded4;
+                        border-radius: 16px;
+                        overflow: hidden;
+                        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                        box-shadow: 0 6px 20px rgba(42, 37, 32, 0.08);
+                        cursor: pointer;
+                        position: relative;
+                    }
+                    
+                    .book-card:hover {
+                        transform: translateY(-8px);
+                        box-shadow: 0 16px 40px rgba(42, 37, 32, 0.15);
+                        border-color: #c89b7b;
+                    }
+                    
+                    .book-image {
+                        width: 100%;
+                        height: 320px;
+                        background: linear-gradient(135deg, #f5efe8 0%, #e8dfd5 100%);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    
+                    .book-image img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                        padding: 1rem;
+                        transition: transform 0.4s;
+                    }
+                    
+                    .book-card:hover .book-image img {
+                        transform: scale(1.05);
+                    }
+                    
+                    .no-cover {
+                        color: #8b7f73;
+                        font-size: 4rem;
+                        opacity: 0.3;
+                    }
+                    
+                    .reading-list-toggle {
+                        position: absolute;
+                        top: 1rem;
+                        right: 1rem;
+                        width: 40px;
+                        height: 40px;
+                        background: rgba(255, 255, 255, 0.95);
+                        border: 2px solid #e6ded4;
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        font-size: 1.25rem;
+                        transition: all 0.2s;
+                        z-index: 10;
+                    }
+                    
+                    .reading-list-toggle:hover {
+                        background: #c89b7b;
+                        border-color: #c89b7b;
+                        color: #fff;
+                        transform: scale(1.1);
+                    }
+                    
+                    .reading-list-toggle.active {
+                        background: #c89b7b;
+                        border-color: #c89b7b;
+                        color: #fff;
+                    }
+                    
+                    .book-body {
+                        padding: 1.5rem;
+                    }
+                    
+                    .book-title {
+                        font-size: 1.25rem;
+                        font-weight: 700;
+                        margin-bottom: 1rem;
+                        color: #2a2520;
+                        line-height: 1.3;
+                        display: -webkit-box;
+                        -webkit-line-clamp: 2;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        min-height: 2.6em;
+                    }
+                    
+                    .book-meta {
+                        font-size: 0.875rem;
+                        color: #6b5f53;
+                        margin-bottom: 0.6rem;
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 0.5rem;
+                    }
+                    
+                    .book-meta-icon {
+                        color: #c89b7b;
+                        flex-shrink: 0;
+                        margin-top: 2px;
+                    }
+                    
+                    /* Empty State */
+                    .no-results {
+                        text-align: center;
+                        padding: 4rem 2rem;
+                        background: #fff;
+                        border: 2px dashed #d4cac0;
+                        border-radius: 16px;
+                    }
+                    
+                    .no-results-icon {
+                        font-size: 5rem;
+                        margin-bottom: 1.5rem;
+                        opacity: 0.6;
+                    }
+                    
+                    .no-results p {
+                        font-size: 1.125rem;
+                        color: #6b5f53;
+                        margin-bottom: 0.5rem;
+                    }
+                    
+                    /* Reading List Modal */
+                    .modal {
+                        display: none;
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        background: rgba(0, 0, 0, 0.7);
+                        z-index: 1000;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 2rem;
+                    }
+                    
+                    .modal.active {
+                        display: flex;
+                    }
+                    
+                    .modal-content {
+                        background: #fff;
+                        border-radius: 20px;
+                        max-width: 600px;
+                        width: 100%;
+                        max-height: 80vh;
+                        overflow-y: auto;
+                        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+                    }
+                    
+                    .modal-header {
+                        padding: 2rem;
+                        border-bottom: 2px solid #f0ebe5;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+                    
+                    .modal-title {
+                        font-size: 1.75rem;
+                        font-weight: 700;
+                        display: flex;
+                        align-items: center;
+                        gap: 0.75rem;
+                    }
+                    
+                    .modal-close {
+                        background: transparent;
+                        border: none;
+                        font-size: 2rem;
+                        cursor: pointer;
+                        color: #6b5f53;
+                        width: 40px;
+                        height: 40px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        transition: all 0.2s;
+                    }
+                    
+                    .modal-close:hover {
+                        background: #f0ebe5;
+                        color: #2a2520;
+                    }
+                    
+                    .modal-body {
+                        padding: 2rem;
+                    }
+                    
+                    .reading-list-item {
+                        display: flex;
+                        gap: 1rem;
+                        padding: 1rem;
+                        background: #fafafa;
+                        border-radius: 12px;
+                        margin-bottom: 1rem;
+                        align-items: center;
+                        transition: all 0.2s;
+                    }
+                    
+                    .reading-list-item:hover {
+                        background: #f0ebe5;
+                    }
+                    
+                    .reading-list-item img {
+                        width: 60px;
+                        height: 80px;
+                        object-fit: cover;
+                        border-radius: 6px;
+                        background: #fff;
+                    }
+                    
+                    .reading-list-info {
+                        flex: 1;
+                    }
+                    
+                    .reading-list-title {
+                        font-weight: 600;
+                        margin-bottom: 0.25rem;
+                    }
+                    
+                    .reading-list-author {
+                        font-size: 0.875rem;
+                        color: #6b5f53;
+                    }
+                    
+                    .remove-btn {
+                        background: transparent;
+                        border: none;
+                        color: #d32f2f;
+                        cursor: pointer;
+                        padding: 0.5rem;
+                        font-size: 1.25rem;
+                        border-radius: 50%;
+                        transition: all 0.2s;
+                    }
+                    
+                    .remove-btn:hover {
+                        background: #ffebee;
+                    }
+                    
+                    /* Responsive */
+                    @media (max-width: 992px) {
+                        .books-grid {
+                            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                            gap: 1.5rem;
+                        }
+                    }
+                    
+                    @media (max-width: 768px) {
+                        .header-content {
+                            flex-direction: column;
+                            gap: 1rem;
+                        }
+                        
+                        .nav-menu {
+                            flex-wrap: wrap;
+                            justify-content: center;
+                            gap: 1rem;
+                        }
+                        
+                        .main-content {
+                            padding: 1rem;
+                        }
+                        
+                        .page-title {
+                            font-size: 2rem;
+                        }
+                        
+                        .search-filter-section {
+                            padding: 1.5rem;
+                        }
+                        
+                        .filter-section {
+                            grid-template-columns: 1fr;
+                        }
+                        
+                        .filter-actions {
+                            flex-direction: column;
+                            width: 100%;
+                        }
+                        
+                        .btn {
+                            width: 100%;
+                        }
+                    }
+                    
+                    @media (max-width: 576px) {
+                        .books-grid {
+                            grid-template-columns: 1fr;
+                        }
+                    }
+                </style>
+            </head>
+            <body>
+                <!-- Header -->
+                <header class="header">
+                    <div class="header-content">
+                        <a href="/library/books" class="logo">
+                            <div class="logo-icon">📚</div>
+                            <span>Library Portal</span>
+                        </a>
+                        <nav>
+                            <ul class="nav-menu">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/mybooks">My Books</a></li>
+                                <li><a href="/library/books">Browse All</a></li>
+                                <li>
+                                    <a href="#" class="reading-list-btn" onclick="openReadingList(event)">
+                                        <span>📖</span>
+                                        <span>Reading List</span>
+                                        <span class="reading-list-badge" id="readingListCount">0</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <div class="page-header">
+                        <h1 class="page-title">Browse All Books</h1>
+                        <p class="page-subtitle">Discover and explore our entire collection</p>
+                    </div>
+
+                    <!-- Search & Filter Section -->
+                    <div class="search-filter-section">
+                        <div class="search-box">
+                            <div class="search-input-wrapper">
+                                <span class="search-icon">🔍</span>
+                                <input 
+                                    type="text" 
+                                    class="search-input" 
+                                    id="searchInput" 
+                                    placeholder="Search by title, author, publisher, or ISBN..."
+                                    onkeyup="filterBooks()"
+                                />
+                            </div>
+                        </div>
+                        
+                        <div class="filter-section">
+                            <div class="filter-group">
+                                <label class="filter-label">Author</label>
+                                <select class="filter-select" id="authorFilter" onchange="filterBooks()">
+                                    <option value="">All Authors</option>
+                                    <t t-foreach="authors" t-as="author">
+                                        <option t-att-value="author.id">
+                                            <t t-esc="author.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label class="filter-label">Publisher</label>
+                                <select class="filter-select" id="publisherFilter" onchange="filterBooks()">
+                                    <option value="">All Publishers</option>
+                                    <t t-foreach="publishers" t-as="publisher">
+                                        <option t-att-value="publisher.id">
+                                            <t t-esc="publisher.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label class="filter-label">Sort By</label>
+                                <select class="filter-select" id="sortFilter" onchange="sortBooks()">
+                                    <option value="title-asc">Title (A-Z)</option>
+                                    <option value="title-desc">Title (Z-A)</option>
+                                    <option value="date-desc">Newest First</option>
+                                    <option value="date-asc">Oldest First</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-actions">
+                            <button class="btn btn-secondary" onclick="clearFilters()">Clear Filters</button>
+                            <span class="results-info" id="resultsInfo">
+                                Showing <span id="resultCount">0</span> books
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Category Quick Filters -->
+                    <div class="category-section">
+                        <div class="category-tags">
+                            <div class="category-tag active" data-category="all" onclick="filterByCategory('all')">
+                                <span>📚</span>
+                                <span>All Books</span>
+                            </div>
+                            <div class="category-tag" data-category="recent" onclick="filterByCategory('recent')">
+                                <span>🆕</span>
+                                <span>Recently Published</span>
+                            </div>
+                            <div class="category-tag" data-category="classic" onclick="filterByCategory('classic')">
+                                <span>📖</span>
+                                <span>Classics</span>
+                            </div>
+                            <div class="category-tag" data-category="reading-list" onclick="filterByCategory('reading-list')">
+                                <span>⭐</span>
+                                <span>My Reading List</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Books Grid -->
+                    <div class="books-grid" id="booksGrid">
+                        <t t-foreach="books" t-as="book">
+                            <article class="book-card" 
+                                     t-att-data-book-id="book.id"
+                                     t-att-data-title="book.title.lower()"
+                                     t-att-data-authors="','.join(book.author_ids.mapped('name')).lower() if book.author_ids else ''"
+                                     t-att-data-publisher="book.publisher_id.name.lower() if book.publisher_id else ''"
+                                     t-att-data-isbn="book.isbn or ''"
+                                     t-att-data-author-ids="','.join(map(str, book.author_ids.ids))"
+                                     t-att-data-publisher-id="book.publisher_id.id if book.publisher_id else ''"
+                                     t-att-data-date="book.date_published or ''"
+                                     onclick="goToBook(event, this)">
+                                <div class="book-image">
+                                    <t t-if="book.image">
+                                        <img t-att-src="image_data_uri(book.image)" t-att-alt="book.title"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span class="no-cover">📕</span>
+                                    </t>
+                                </div>
+                                <div class="reading-list-toggle" 
+                                     t-attf-onclick="event.stopPropagation(); toggleReadingList(#{book.id}, '#{book.title}', '#{','.join(book.author_ids.mapped('name')) if book.author_ids else 'Unknown'}')">
+                                    <span class="heart-icon">🤍</span>
+                                </div>
+                                <div class="book-body">
+                                    <h2 class="book-title">
+                                        <t t-esc="book.title"/>
+                                    </h2>
+                                    <div class="book-meta">
+                                        <span class="book-meta-icon">✍️</span>
+                                        <span>
+                                            <t t-if="book.author_ids">
+                                                <t t-esc="', '.join(book.author_ids.mapped('name'))"/>
+                                            </t>
+                                            <t t-else="">Unknown Author</t>
+                                        </span>
+                                    </div>
+                                    <div class="book-meta">
+                                        <span class="book-meta-icon">📅</span>
+                                        <span><t t-esc="book.date_published and book.date_published.strftime('%B %Y') or 'Date not available'"/></span>
+                                    </div>
+                                    <div class="book-meta">
+                                        <span class="book-meta-icon">🏢</span>
+                                        <span><t t-esc="book.publisher_id.name or 'Unknown Publisher'"/></span>
+                                    </div>
+                                </div>
+                            </article>
+                        </t>
+                    </div>
+                    
+                    <!-- No Results -->
+                    <div class="no-results" id="noResults" style="display: none;">
+                        <div class="no-results-icon">🔍</div>
+                        <p>No books found</p>
+                        <p style="font-size: 0.95rem; color: #8b7f73;">Try adjusting your search or filters</p>
+                    </div>
+                </main>
+
+                <!-- Reading List Modal -->
+                <div class="modal" id="readingListModal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title">
+                                <span>📖</span>
+                                <span>My Reading List</span>
+                            </h2>
+                            <button class="modal-close" onclick="closeReadingList()">×</button>
+                        </div>
+                        <div class="modal-body" id="readingListBody">
+                            <div class="no-results">
+                                <div class="no-results-icon">📚</div>
+                                <p>Your reading list is empty</p>
+                                <p style="font-size: 0.95rem; color: #8b7f73;">Start adding books you want to read!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- JavaScript -->
+                <script>
+                    // Reading List Management (localStorage)
+                    let readingList = JSON.parse(localStorage.getItem('readingList') || '[]');
+                    
+                    function updateReadingListUI() {
+                        // Update badge count
+                        document.getElementById('readingListCount').textContent = readingList.length;
+                        
+                        // Update heart icons
+                        document.querySelectorAll('.book-card').forEach(card => {
+                            const bookId = parseInt(card.dataset.bookId);
+                            const toggle = card.querySelector('.reading-list-toggle');
+                            const heartIcon = toggle.querySelector('.heart-icon');
+                            
+                            if (readingList.some(b => b.id === bookId)) {
+                                toggle.classList.add('active');
+                                heartIcon.textContent = '❤️';
+                            } else {
+                                toggle.classList.remove('active');
+                                heartIcon.textContent = '🤍';
+                            }
+                        });
+                    }
+                    
+                    function toggleReadingList(bookId, title, authors) {
+                        const index = readingList.findIndex(b => b.id === bookId);
+                        
+                        if (index > -1) {
+                            readingList.splice(index, 1);
+                        } else {
+                            readingList.push({ id: bookId, title, authors });
+                        }
+                        
+                        localStorage.setItem('readingList', JSON.stringify(readingList));
+                        updateReadingListUI();
+                    }
+                    
+                    function openReadingList(event) {
+                        event.preventDefault();
+                        const modal = document.getElementById('readingListModal');
+                        const body = document.getElementById('readingListBody');
+                        
+                        if (readingList.length === 0) {
+                            body.innerHTML = `
+                                <div class="no-results">
+                                    <div class="no-results-icon">📚</div>
+                                    <p>Your reading list is empty</p>
+                                    <p style="font-size: 0.95rem; color: #8b7f73;">Start adding books you want to read!</p>
+                                </div>
+                            `;
+                        } else {
+                            body.innerHTML = readingList.map(book => `
+                                <div class="reading-list-item">
+                                    <div class="reading-list-info">
+                                        <div class="reading-list-title">${book.title}</div>
+                                        <div class="reading-list-author">by ${book.authors}</div>
+                                    </div>
+                                    <button class="btn btn-primary" onclick="window.location.href='/book/${book.id}'">View</button>
+                                    <button class="remove-btn" onclick="toggleReadingList(${book.id}, '${book.title}', '${book.authors}'); openReadingList(event);">×</button>
+                                </div>
+                            `).join('');
+                        }
+                        
+                        modal.classList.add('active');
+                    }
+                    
+                    function closeReadingList() {
+                        document.getElementById('readingListModal').classList.remove('active');
+                    }
+                    
+                    // Search & Filter Functions
+                    function filterBooks() {
+                        const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+                        const authorFilter = document.getElementById('authorFilter').value;
+                        const publisherFilter = document.getElementById('publisherFilter').value;
+                        
+                        const cards = document.querySelectorAll('.book-card');
+                        let visibleCount = 0;
+                        
+                        cards.forEach(card => {
+                            const title = card.dataset.title;
+                            const authors = card.dataset.authors;
+                            const publisher = card.dataset.publisher;
+                            const isbn = card.dataset.isbn;
+                            const authorIds = card.dataset.authorIds.split(',');
+                            const publisherId = card.dataset.publisherId;
+                            
+                            const matchesSearch = !searchTerm || 
+                                title.includes(searchTerm) || 
+                                authors.includes(searchTerm) || 
+                                publisher.includes(searchTerm) ||
+                                isbn.includes(searchTerm);
+                            
+                            const matchesAuthor = !authorFilter || authorIds.includes(authorFilter);
+                            const matchesPublisher = !publisherFilter || publisherId === publisherFilter;
+                            
+                            if (matchesSearch &amp;&amp; matchesAuthor &amp;&amp; matchesPublisher) {
+                                card.style.display = '';
+                                visibleCount++;
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                        
+                        updateResultsInfo(visibleCount);
+                    }
+                    
+                    function sortBooks() {
+                        const sortValue = document.getElementById('sortFilter').value;
+                        const grid = document.getElementById('booksGrid');
+                        const cards = Array.from(grid.querySelectorAll('.book-card'));
+                        
+                        cards.sort((a, b) => {
+                            if (sortValue === 'title-asc') {
+                                return a.dataset.title.localeCompare(b.dataset.title);
+                            } else if (sortValue === 'title-desc') {
+                                return b.dataset.title.localeCompare(a.dataset.title);
+                            } else if (sortValue === 'date-desc') {
+                                return (b.dataset.date || '').localeCompare(a.dataset.date || '');
+                            } else if (sortValue === 'date-asc') {
+                                return (a.dataset.date || '').localeCompare(b.dataset.date || '');
+                            }
+                        });
+                        
+                        cards.forEach(card => grid.appendChild(card));
+                    }
+                    
+                    function filterByCategory(category) {
+                        // Update active tag
+                        document.querySelectorAll('.category-tag').forEach(tag => {
+                            tag.classList.remove('active');
+                        });
+                        event.target.closest('.category-tag').classList.add('active');
+                        
+                        const cards = document.querySelectorAll('.book-card');
+                        let visibleCount = 0;
+                        
+                        if (category === 'all') {
+                            cards.forEach(card => {
+                                card.style.display = '';
+                                visibleCount++;
+                            });
+                        } else if (category === 'recent') {
+                            const twoYearsAgo = new Date();
+                            twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+                            
+                            cards.forEach(card => {
+                                const date = new Date(card.dataset.date);
+                                if (date >= twoYearsAgo) {
+                                    card.style.display = '';
+                                    visibleCount++;
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        } else if (category === 'classic') {
+                            const twentyYearsAgo = new Date();
+                            twentyYearsAgo.setFullYear(twentyYearsAgo.getFullYear() - 20);
+                            
+                            cards.forEach(card => {
+                                const date = new Date(card.dataset.date);
+                                if (date &lt; twentyYearsAgo) {
+                                    card.style.display = '';
+                                    visibleCount++;
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        } else if (category === 'reading-list') {
+                            cards.forEach(card => {
+                                const bookId = parseInt(card.dataset.bookId);
+                                if (readingList.some(b => b.id === bookId)) {
+                                    card.style.display = '';
+                                    visibleCount++;
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                        }
+                        
+                        updateResultsInfo(visibleCount);
+                    }
+                    
+                    function clearFilters() {
+                        document.getElementById('searchInput').value = '';
+                        document.getElementById('authorFilter').value = '';
+                        document.getElementById('publisherFilter').value = '';
+                        document.getElementById('sortFilter').value = 'title-asc';
+                        
+                        // Reset category to "All"
+                        document.querySelectorAll('.category-tag').forEach(tag => {
+                            tag.classList.remove('active');
+                        });
+                        document.querySelector('[data-category="all"]').classList.add('active');
+                        
+                        filterBooks();
+                        sortBooks();
+                    }
+                    
+                    function updateResultsInfo(count) {
+                        document.getElementById('resultCount').textContent = count;
+                        document.getElementById('noResults').style.display = count === 0 ? 'block' : 'none';
+                        document.getElementById('booksGrid').style.display = count === 0 ? 'none' : 'grid';
+                    }
+                    
+                    function goToBook(event, card) {
+                        // Don't navigate if clicking the heart
+                        if (event.target.closest('.reading-list-toggle')) {
+                            return;
+                        }
+                        window.location.href = '/book/' + card.dataset.bookId;
+                    }
+                    
+                    // Initialize
+                    document.addEventListener('DOMContentLoaded', function() {
+                        updateReadingListUI();
+                        filterBooks();
+                        
+                        // Close modal on outside click
+                        document.getElementById('readingListModal').addEventListener('click', function(e) {
+                            if (e.target === this) {
+                                closeReadingList();
+                            }
+                        });
+                    });
+                </script>
+            </body>
+        </html>
+    </template>
+    
+</odoo>

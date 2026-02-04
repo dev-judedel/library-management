@@ -8,13 +8,34 @@ class LibraryController(http.Controller):
 
     @http.route('/library/books', type='http', auth='public', website=True)
     def library_books(self, **kwargs):
-        """Display all library books"""
+        """Display all library books with enhanced browsing features"""
         # Fetch all active books
         books = request.env['library.management'].sudo().search([])
         
-        # Render template with books data
-        return request.render('library_management.library_books_template', {
+        # Get unique publishers for filter
+        publishers = request.env['res.partner'].sudo().search([
+            ('id', 'in', books.mapped('publisher_id').ids)
+        ]).sorted('name')
+        
+        # Get unique authors for filter
+        authors = request.env['res.partner'].sudo().search([
+            ('id', 'in', books.mapped('author_ids').ids)
+        ]).sorted('name')
+        
+        # Get date range
+        dates = books.mapped('date_published')
+        dates = [d for d in books.mapped('date_published') if d]
+        date_range = {
+            'min': min(dates) if dates else None,
+            'max': max(dates) if dates else None
+        }
+        
+        # Render enhanced template with filter data
+        return request.render('library_management.library_books_enhanced_template', {
             'books': books,
+            'publishers': publishers,
+            'authors': authors,
+            'date_range': date_range,
         })
 
     @http.route('/mybooks', type='http', auth='user', website=True)
