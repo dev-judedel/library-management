@@ -18,11 +18,15 @@
     'depends': ['base', 'web', 'website', 'contacts'],
     'data': [
         'security/ir.model.access.csv',
+        'data/library_management_demo.xml',
         'views/library_management_views.xml',
         'views/library_management_menus.xml',
         'views/library_books_template.xml',
         'views/library_books_enhanced_template.xml',
         'views/res_partner_views.xml',
+    ],
+    'demo': [
+        'data/library_management_demo.xml',
     ],
   
     'installable': True,

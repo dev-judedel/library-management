@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Sample Publishers -->
+        <record id="publisher_oreilly" model="res.partner">
+            <field name="name">O'Reilly Media</field>
+            <field name="is_company">True</field>
+            <field name="email">contact@oreilly.com</field>
+            <field name="phone">+1-800-998-9938</field>
+            <field name="website">https://www.oreilly.com</field>
+        </record>
+        
+        <record id="publisher_addison_wesley" model="res.partner">
+            <field name="name">Addison-Wesley Professional</field>
+            <field name="is_company">True</field>
+            <field name="email">info@aw.com</field>
+            <field name="phone">+1-617-944-3700</field>
+            <field name="website">https://www.pearson.com</field>
+        </record>
+        
+        <record id="publisher_packt" model="res.partner">
+            <field name="name">Packt Publishing</field>
+            <field name="is_company">True</field>
+            <field name="email">support@packtpub.com</field>
+            <field name="website">https://www.packtpub.com</field>
+        </record>
+        
+        <record id="publisher_manning" model="res.partner">
+            <field name="name">Manning Publications</field>
+            <field name="is_company">True</field>
+            <field name="email">support@manning.com</field>
+            <field name="website">https://www.manning.com</field>
+        </record>
+        
+        <!-- Sample Authors -->
+        <record id="author_mark_lutz" model="res.partner">
+            <field name="name">Mark Lutz</field>
+            <field name="email">mark.lutz@example.com</field>
+            <field name="function">Python Expert &amp; Author</field>
+        </record>
+        
+        <record id="author_robert_martin" model="res.partner">
+            <field name="name">Robert C. Martin</field>
+            <field name="email">robert.martin@example.com</field>
+            <field name="function">Software Engineer &amp; Author</field>
+        </record>
+        
+        <record id="author_douglas_crockford" model="res.partner">
+            <field name="name">Douglas Crockford</field>
+            <field name="email">douglas.crockford@example.com</field>
+            <field name="function">JavaScript Architect</field>
+        </record>
+        
+        <record id="author_bjarne_stroustrup" model="res.partner">
+            <field name="name">Bjarne Stroustrup</field>
+            <field name="email">bjarne@example.com</field>
+            <field name="function">C++ Creator &amp; Author</field>
+        </record>
+        
+        <record id="author_joshua_bloch" model="res.partner">
+            <field name="name">Joshua Bloch</field>
+            <field name="email">joshua.bloch@example.com</field>
+            <field name="function">Java Expert &amp; Author</field>
+        </record>
+        
+        <record id="author_david_thomas" model="res.partner">
+            <field name="name">David Thomas</field>
+            <field name="email">david.thomas@example.com</field>
+            <field name="function">Software Developer &amp; Author</field>
+        </record>
+        
+        <record id="author_andrew_hunt" model="res.partner">
+            <field name="name">Andrew Hunt</field>
+            <field name="email">andrew.hunt@example.com</field>
+            <field name="function">Software Developer &amp; Author</field>
+        </record>
+        
+        <!-- Sample Book 1: Learning Python -->
+        <record id="book_learning_python" model="library.management">
+            <field name="title">Learning Python: Powerful Object-Oriented Programming</field>
+            <field name="isbn">9781449355739</field>
+            <field name="date_published">2013-06-12</field>
+            <field name="publisher_id" ref="publisher_oreilly"/>
+            <field name="author_ids" eval="[(6, 0, [ref('author_mark_lutz')])]"/>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/Python_(programming_language)</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Sample Book 2: Clean Code -->
+        <record id="book_clean_code" model="library.management">
+            <field name="title">Clean Code: A Handbook of Agile Software Craftsmanship</field>
+            <field name="isbn">9780132350884</field>
+            <field name="date_published">2008-08-01</field>
+            <field name="publisher_id" ref="publisher_addison_wesley"/>
+            <field name="author_ids" eval="[(6, 0, [ref('author_robert_martin')])]"/>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/Robert_C._Martin</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Sample Book 3: JavaScript: The Good Parts -->
+        <record id="book_javascript_good_parts" model="library.management">
+            <field name="title">JavaScript: The Good Parts</field>
+            <field name="isbn">9780596517748</field>
+            <field name="date_published">2008-05-08</field>
+            <field name="publisher_id" ref="publisher_oreilly"/>
+            <field name="author_ids" eval="[(6, 0, [ref('author_douglas_crockford')])]"/>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/JavaScript</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Sample Book 4: The C++ Programming Language -->
+        <record id="book_cpp_programming" model="library.management">
+            <field name="title">The C++ Programming Language</field>
+            <field name="isbn">9780321563842</field>
+            <field name="date_published">2013-05-19</field>
+            <field name="publisher_id" ref="publisher_addison_wesley"/>
+            <field name="author_ids" eval="[(6, 0, [ref('author_bjarne_stroustrup')])]"/>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/C%2B%2B</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Sample Book 5: Effective Java -->
+        <record id="book_effective_java" model="library.management">
+            <field name="title">Effective Java</field>
+            <field name="isbn">9780134685991</field>
+            <field name="date_published">2017-12-27</field>
+            <field name="publisher_id" ref="publisher_addison_wesley"/>
+            <field name="author_ids" eval="[(6, 0, [ref('author_joshua_bloch')])]"/>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/Java_(programming_language)</field>
+            <field name="active">True</field>
+        </record>
+        
+    </data>
+</odoo>
