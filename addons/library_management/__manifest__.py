@@ -15,7 +15,7 @@
     """,
     'author': 'Your Name',
     'website': 'https://www.example.com',
-    'depends': ['base', 'web'],
+    'depends': ['base', 'web', 'website', 'contacts'],
     'data': [
         'security/ir.model.access.csv',
         'views/library_management_views.xml',
@@ -24,6 +24,7 @@
         'views/library_books_enhanced_template.xml',
         'views/res_partner_views.xml',
     ],
+  
     'installable': True,
     'application': True,
     'auto_install': False,

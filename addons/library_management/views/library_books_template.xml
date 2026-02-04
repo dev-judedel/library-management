@@ -1140,8 +1140,8 @@
                             <span>←</span>
                             <span>Back to Library</span>
                         </a>
-                        <a href="/mybooks" class="logo">
-                            <div class="logo-icon">📕</div>
+                       <a href="/library/books" class="logo">
+                            <img src="/library_management/static/description/icon.png" alt="Library Logo" style="width: 36px; height: 36px; border-radius: 8px;"/>
                             <span>Library Portal</span>
                         </a>
                     </div>
