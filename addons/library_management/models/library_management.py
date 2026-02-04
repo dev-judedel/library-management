@@ -11,7 +11,7 @@ class LibraryManagement(models.Model):
 
     # Fields as per requirements
     image = fields.Image(string='Cover')
-    title = fields.Char(string='Title', required=True)
+    title = fields.Char(string='Title')  # Validation handled by @api.constrains
     isbn = fields.Char(string='ISBN')
     active = fields.Boolean(string='Active', default=True)
     date_published = fields.Date(string='Date Published')
@@ -29,7 +29,7 @@ class LibraryManagement(models.Model):
     def action_check_isbn(self):
         """Check ISBN validation when button is clicked"""
         self.ensure_one()
-        self._validate_isbn()
+        self._validate_isbn(check_empty=True)  # When button clicked, check if empty
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',
@@ -42,12 +42,20 @@ class LibraryManagement(models.Model):
         }
 
     # Validation method for ISBN
-    def _validate_isbn(self):
-        """Validate ISBN format and length"""
+    def _validate_isbn(self, check_empty=False):
+        """Validate ISBN format and length
+        
+        Args:
+            check_empty: If True, raise error when ISBN is empty (for button click)
+                        If False, skip validation when ISBN is empty (for save)
+        """
         for record in self:
             # Check if ISBN is empty
             if not record.isbn:
-                raise ValidationError(f"Please provide an ISBN for {record.title}")
+                if check_empty:  # Only raise error if explicitly checking (button click)
+                    raise ValidationError(f"Please provide an ISBN for {record.title}")
+                else:
+                    return  # Skip validation if ISBN is empty during save
             
             # Check if ISBN contains only digits
             if not record.isbn.isdigit():

@@ -17,6 +17,7 @@
                     <group>
                         <group>
                             <field name="title"
+                                required="1"
                                 placeholder="Enter book title"
                                 help="Type the full title of the book."/>
 

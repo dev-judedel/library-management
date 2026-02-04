@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Sample Publisher Partners -->
+        <record id="publisher_penguin" model="res.partner">
+            <field name="name">Penguin Random House</field>
+            <field name="company_type">company</field>
+            <field name="email">contact@penguinrandomhouse.com</field>
+        </record>
+
+        <record id="publisher_harpercollins" model="res.partner">
+            <field name="name">HarperCollins Publishers</field>
+            <field name="company_type">company</field>
+            <field name="email">info@harpercollins.com</field>
+        </record>
+
+        <record id="publisher_simon" model="res.partner">
+            <field name="name">Simon &amp; Schuster</field>
+            <field name="company_type">company</field>
+            <field name="email">contact@simonandschuster.com</field>
+        </record>
+
+        <!-- Sample Author Partners -->
+        <record id="author_fitzgerald" model="res.partner">
+            <field name="name">F. Scott Fitzgerald</field>
+            <field name="company_type">person</field>
+        </record>
+
+        <record id="author_orwell" model="res.partner">
+            <field name="name">George Orwell</field>
+            <field name="company_type">person</field>
+        </record>
+
+        <record id="author_lee" model="res.partner">
+            <field name="name">Harper Lee</field>
+            <field name="company_type">person</field>
+        </record>
+
+        <record id="author_austen" model="res.partner">
+            <field name="name">Jane Austen</field>
+            <field name="company_type">person</field>
+        </record>
+
+        <record id="author_salinger" model="res.partner">
+            <field name="name">J.D. Salinger</field>
+            <field name="company_type">person</field>
+        </record>
+
+        <!-- Sample Book 1: The Great Gatsby -->
+        <record id="book_great_gatsby" model="library.management">
+            <field name="title">The Great Gatsby</field>
+            <field name="isbn">9780743273565</field>
+            <field name="date_published">1925-04-10</field>
+            <field name="publisher_id" ref="publisher_penguin"/>
+            <field name="active">True</field>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/The_Great_Gatsby</field>
+        </record>
+        <record id="book_great_gatsby_author" model="library.management">
+            <field name="id" ref="book_great_gatsby"/>
+            <field name="author_ids" eval="[(4, ref('author_fitzgerald'))]"/>
+        </record>
+
+        <!-- Sample Book 2: 1984 -->
+        <record id="book_1984" model="library.management">
+            <field name="title">1984</field>
+            <field name="isbn">9780451524935</field>
+            <field name="date_published">1949-06-08</field>
+            <field name="publisher_id" ref="publisher_penguin"/>
+            <field name="active">True</field>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/Nineteen_Eighty-Four</field>
+        </record>
+        <record id="book_1984_author" model="library.management">
+            <field name="id" ref="book_1984"/>
+            <field name="author_ids" eval="[(4, ref('author_orwell'))]"/>
+        </record>
+
+        <!-- Sample Book 3: To Kill a Mockingbird -->
+        <record id="book_mockingbird" model="library.management">
+            <field name="title">To Kill a Mockingbird</field>
+            <field name="isbn">9780061120084</field>
+            <field name="date_published">1960-07-11</field>
+            <field name="publisher_id" ref="publisher_harpercollins"/>
+            <field name="active">True</field>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/To_Kill_a_Mockingbird</field>
+        </record>
+        <record id="book_mockingbird_author" model="library.management">
+            <field name="id" ref="book_mockingbird"/>
+            <field name="author_ids" eval="[(4, ref('author_lee'))]"/>
+        </record>
+
+        <!-- Sample Book 4: Pride and Prejudice -->
+        <record id="book_pride_prejudice" model="library.management">
+            <field name="title">Pride and Prejudice</field>
+            <field name="isbn">9780141439518</field>
+            <field name="date_published">1813-01-28</field>
+            <field name="publisher_id" ref="publisher_penguin"/>
+            <field name="active">True</field>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/Pride_and_Prejudice</field>
+        </record>
+        <record id="book_pride_prejudice_author" model="library.management">
+            <field name="id" ref="book_pride_prejudice"/>
+            <field name="author_ids" eval="[(4, ref('author_austen'))]"/>
+        </record>
+
+        <!-- Sample Book 5: The Catcher in the Rye -->
+        <record id="book_catcher_rye" model="library.management">
+            <field name="title">The Catcher in the Rye</field>
+            <field name="isbn">9780316769488</field>
+            <field name="date_published">1951-07-16</field>
+            <field name="publisher_id" ref="publisher_simon"/>
+            <field name="active">True</field>
+            <field name="webpage_link">https://en.wikipedia.org/wiki/The_Catcher_in_the_Rye</field>
+        </record>
+        <record id="book_catcher_rye_author" model="library.management">
+            <field name="id" ref="book_catcher_rye"/>
+            <field name="author_ids" eval="[(4, ref('author_salinger'))]"/>
+        </record>
+
+    </data>
+</odoo>

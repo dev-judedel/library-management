@@ -15,9 +15,10 @@
     """,
     'author': 'Your Name',
     'website': 'https://www.example.com',
-    'depends': ['base', 'web'],
+    'depends': ['base', 'web', 'website', 'contacts'],
     'data': [
         'security/ir.model.access.csv',
+        'data/library_demo_data.xml',
         'views/library_management_views.xml',
         'views/library_management_menus.xml',
         'views/library_books_template.xml',
