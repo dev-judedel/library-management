@@ -21,10 +21,18 @@
         'data/library_management_demo.xml',
         'views/library_management_views.xml',
         'views/library_management_menus.xml',
-        'views/library_books_template.xml',
+        'views/library_books_template_clean.xml',  # Clean version with external CSS/JS
+        #'views/library_books_template.xml',  # Old version with inline styles
         'views/library_books_enhanced_template.xml',
         'views/res_partner_views.xml',
     ],
+    'assets': {
+        'web.assets_frontend': [
+            'library_management/static/src/css/library_books.css',
+            'library_management/static/src/css/book_details.css',
+            'library_management/static/src/js/book_details.js',
+        ],
+    },
     'demo': [
         'data/library_management_demo.xml',
     ],

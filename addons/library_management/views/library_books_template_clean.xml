@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- My Books Template - Clean Version -->
+    <template id="library_my_books_template" name="My Books">
+        <t t-call="website.layout">
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="title">My Books - Library Portal</t>
+            <div id="wrap">
+                <!-- Header -->
+                <header class="header">
+                    <div class="header-content">
+                        <a href="/library/books" class="logo">
+                            <img src="/library_management/static/description/icon.png" alt="Library Logo" style="width: 36px; height: 36px; border-radius: 8px;"/>
+                            <span>Library Portal</span>
+                        </a>
+                        <nav>
+                            <ul class="nav-menu">
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/mybooks" class="active">My Books</a></li>
+                                <li><a href="/library/books">All Books</a></li>
+                                <li><a href="/my/account">Account</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <div class="page-header">
+                        <h1 class="page-title">My Books</h1>
+                        <p class="page-subtitle">
+                            Books where <t t-esc="partner.name"/> is listed as an author.
+                        </p>
+                    </div>
+
+                    <t t-if="books">
+                        <div class="card-grid">
+                            <t t-foreach="books" t-as="book">
+                                <article class="card" style="cursor: pointer;" t-attf-onclick="window.location.href='/book/#{book.id}'">
+                                    <div class="card-image">
+                                        <t t-if="book.image">
+                                            <img t-att-src="image_data_uri(book.image)" t-att-alt="book.title"/>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="no-cover-text">No Cover</span>
+                                        </t>
+                                    </div>
+                                    <div class="card-body">
+                                        <h2 class="card-title">
+                                            <a t-attf-href="/book/#{book.id}" style="color: inherit; text-decoration: none;">
+                                                <t t-esc="book.title"/>
+                                            </a>
+                                        </h2>
+                                        <div class="card-meta">
+                                            <span class="card-meta-icon">✍️</span>
+                                            <span>
+                                                <t t-if="book.author_ids">
+                                                    <t t-esc="', '.join(book.author_ids.mapped('name'))"/>
+                                                </t>
+                                                <t t-else="">Unknown Author</t>
+                                            </span>
+                                        </div>
+                                        <div class="card-meta">
+                                            <span class="card-meta-icon">📅</span>
+                                            <span><t t-esc="book.date_published and book.date_published.strftime('%B %d, %Y') or 'Date not available'"/></span>
+                                        </div>
+                                        <div class="card-meta">
+                                            <span class="card-meta-icon">🏢</span>
+                                            <span><t t-esc="book.publisher_id.name or 'Unknown Publisher'"/></span>
+                                        </div>
+                                    </div>
+                                </article>
+                            </t>
+                        </div>
+                    </t>
+                    
+                    <t t-else="">
+                        <div class="no-books">
+                            <div class="no-books-icon">📕</div>
+                            <p>No books found</p>
+                            <p class="no-books-subtitle">You haven't authored any books yet.</p>
+                        </div>
+                    </t>
+                </main>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    <div class="footer-content">
+                        <div class="footer-grid">
+                            <div class="footer-section">
+                                <h3>About Library</h3>
+                                <p class="footer-description">
+                                    Your comprehensive library management system for tracking books, 
+                                    authors, and publications. Access your collection anywhere, anytime.
+                                </p>
+                            </div>
+                            
+                            <div class="footer-section">
+                                <h3>Quick Links</h3>
+                                <ul class="footer-links">
+                                    <li><a href="/">Home</a></li>
+                                    <li><a href="/mybooks">My Books</a></li>
+                                    <li><a href="/library/books">Browse All Books</a></li>
+                                    <li><a href="/my/account">My Account</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="footer-section">
+                                <h3>Support</h3>
+                                <ul class="footer-links">
+                                    <li><a href="/contactus">Contact Us</a></li>
+                                    <li><a href="/help">Help Center</a></li>
+                                    <li><a href="/faq">FAQ</a></li>
+                                    <li><a href="/privacy">Privacy Policy</a></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="footer-section">
+                                <h3>Connect</h3>
+                                <ul class="footer-links">
+                                    <li><a href="#">Email: library@example.com</a></li>
+                                    <li><a href="#">Phone: (123) 456-7890</a></li>
+                                    <li><a href="#">Address: 123 Library St</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="footer-bottom">
+                            <p>© 2026 Library Management System. All rights reserved.</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </t>
+    </template>
+    
+    <!-- Basic Books Template (for /library/books route) - Simple Table -->
+    <template id="library_books_template" name="Library Books">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="container mt-5 mb-5">
+                    <h1 style="color: #333; border-bottom: 3px solid #7c7bad; padding-bottom: 10px;">Library Books</h1>
+                    
+                    <t t-if="books">
+                        <table class="table table-hover mt-4" style="background-color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                            <thead style="background-color: #7c7bad; color: white;">
+                                <tr>
+                                    <th scope="col">Book Name</th>
+                                    <th scope="col">Authors</th>
+                                    <th scope="col">Date Published</th>
+                                    <th scope="col">Publisher</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="books" t-as="book">
+                                    <tr>
+                                        <td>
+                                            <a t-attf-href="/book/#{book.id}" style="color: #333; text-decoration: none;">
+                                                <t t-esc="book.title"/>
+                                            </a>
+                                        </td>
+                                        <td style="color: #555;">
+                                            <t t-if="book.author_ids">
+                                                <t t-esc="', '.join(book.author_ids.mapped('name'))"/>
+                                            </t>
+                                            <t t-else="">N/A</t>
+                                        </td>
+                                        <td><t t-esc="book.date_published or 'N/A'"/></td>
+                                        <td><t t-esc="book.publisher_id.name or 'N/A'"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </t>
+                    
+                    <t t-else="">
+                        <div class="alert alert-info mt-4" role="alert">
+                            <p class="text-center mb-0">No books available in the library.</p>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <!-- Book Details Template - Clean Version -->
+    <template id="library_book_details_template" name="Book Details">
+        <t t-call="website.layout">
+            <t t-set="no_header" t-value="1"/>
+            <t t-set="no_footer" t-value="1"/>
+            <t t-set="title"><t t-esc="book.title"/> - Library Portal</t>
+            <div id="wrap">
+                <!-- Header -->
+                <header class="header">
+                    <div class="header-content">
+                        <a href="/library/books" class="back-button">
+                            <span>←</span>
+                            <span>Back to Library</span>
+                        </a>
+                        <a href="/library/books" class="logo">
+                            <img src="/library_management/static/description/icon.png" alt="Library Logo" style="width: 36px; height: 36px; border-radius: 8px;"/>
+                            <span>Library Portal</span>
+                        </a>
+                    </div>
+                </header>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <!-- Book Details -->
+                    <div class="book-details-container">
+                        <div class="book-details-grid">
+                            <!-- Book Image Section -->
+                            <div class="book-image-section">
+                                <div class="book-cover-container" id="bookCover">
+                                    <t t-if="book.image">
+                                        <img t-att-src="image_data_uri(book.image)" t-att-alt="book.title" id="coverImage"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="no-cover-placeholder">
+                                            <span class="no-cover-text">No Cover Available</span>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                            
+                            <!-- Book Info Section -->
+                            <div class="book-info-section">
+                                <div>
+                                    <h1 class="book-title">
+                                        <t t-esc="book.title"/>
+                                    </h1>
+                                    <p class="book-subtitle">
+                                        <t t-if="book.author_ids">
+                                            by <t t-esc="', '.join(book.author_ids.mapped('name'))"/>
+                                        </t>
+                                        <t t-else="">Author Unknown</t>
+                                    </p>
+                                </div>
+                                
+                                <!-- Info Grid -->
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <div class="info-label">
+                                            <span class="info-icon">✍️</span>
+                                            <span>Authors</span>
+                                        </div>
+                                        <div class="info-value">
+                                            <t t-if="book.author_ids">
+                                                <t t-esc="', '.join(book.author_ids.mapped('name'))"/>
+                                            </t>
+                                            <t t-else="">Unknown</t>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="info-item">
+                                        <div class="info-label">
+                                            <span class="info-icon">📅</span>
+                                            <span>Published</span>
+                                        </div>
+                                        <div class="info-value">
+                                            <t t-esc="book.date_published and book.date_published.strftime('%B %d, %Y') or 'Date not available'"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="info-item">
+                                        <div class="info-label">
+                                            <span class="info-icon">🏢</span>
+                                            <span>Publisher</span>
+                                        </div>
+                                        <div class="info-value">
+                                            <t t-esc="book.publisher_id.name or 'Unknown Publisher'"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <t t-if="book.isbn">
+                                        <div class="info-item">
+                                            <div class="info-label">
+                                                <span class="info-icon">🔢</span>
+                                                <span>ISBN</span>
+                                            </div>
+                                            <div class="isbn-container">
+                                                <span class="isbn-value" id="isbnValue">
+                                                    <t t-esc="book.isbn"/>
+                                                </span>
+                                                <button class="copy-button" id="copyBtn" onclick="copyISBN()">Copy</button>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="action-buttons">
+                                    <t t-if="book.webpage_link">
+                                        <a t-att-href="book.webpage_link" target="_blank" class="btn btn-primary">
+                                            <span>🔗</span>
+                                            <span>
+                                                <t t-if="'wikipedia' in book.webpage_link.lower()">View on Wikipedia</t>
+                                                <t t-else="">Visit Website</t>
+                                            </span>
+                                        </a>
+                                    </t>
+                                    <a href="/library/books" class="btn btn-secondary">
+                                        <span>📚</span>
+                                        <span>Browse More Books</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Related Books Section -->
+                    <t t-if="related_books">
+                        <div class="related-section">
+                            <h2 class="section-title">
+                                <span>📖</span>
+                                <span>More by These Authors</span>
+                            </h2>
+                            <div class="related-grid">
+                                <t t-foreach="related_books" t-as="related">
+                                    <a t-attf-href="/book/#{related.id}" class="related-card">
+                                        <div class="related-image">
+                                            <t t-if="related.image">
+                                                <img t-att-src="image_data_uri(related.image)" t-att-alt="related.title"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span style="font-size: 3rem; opacity: 0.3;">📕</span>
+                                            </t>
+                                        </div>
+                                        <div class="related-info">
+                                            <div class="related-title">
+                                                <t t-esc="related.title"/>
+                                            </div>
+                                            <div class="related-author">
+                                                <t t-if="related.author_ids">
+                                                    <t t-esc="', '.join(related.author_ids.mapped('name')[:2])"/>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </main>
+                
+                <!-- Image Modal -->
+                <t t-if="book.image">
+                    <div class="image-modal" id="imageModal" onclick="closeModal()">
+                        <span class="modal-close">×</span>
+                        <img class="modal-content" t-att-src="image_data_uri(book.image)" t-att-alt="book.title"/>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+    
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Assets for Library Books Pages -->
+    <template id="library_assets_frontend" name="Library Frontend Assets" inherit_id="web.assets_frontend">
+        <xpath expr="." position="inside">
+            <!-- CSS Files -->
+            <link rel="stylesheet" href="/library_management/static/src/css/library_books.css"/>
+            <link rel="stylesheet" href="/library_management/static/src/css/book_details.css"/>
+            
+            <!-- JavaScript Files -->
+            <script type="text/javascript" src="/library_management/static/src/js/book_details.js"/>
+        </xpath>
+    </template>
+</odoo>
