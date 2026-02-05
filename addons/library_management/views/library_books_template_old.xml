@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-    <template id="library_books_template" name="Library Books">
+    <template id="library_books_template_old" name="Library Books">
         <html>
             <head>
                 <title>Library Books</title>
@@ -34,107 +34,6 @@
         </html>
     </template>
 
-    <template id="library_my_books_template" name="My Books">
-        <html>
-            <head>
-                <title>My Books</title>
-                <style>
-                    body {
-                        font-family: Georgia, "Times New Roman", serif;
-                        margin: 32px;
-                        background: #f7f3ed;
-                        color: #2a2520;
-                    }
-                    .page-title {
-                        font-size: 32px;
-                        margin-bottom: 8px;
-                    }
-                    .page-subtitle {
-                        color: #5b5147;
-                        margin-bottom: 24px;
-                    }
-                    .card-grid {
-                        display: grid;
-                        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-                        gap: 20px;
-                    }
-                    .card {
-                        background: #fff;
-                        border: 1px solid #e6ded4;
-                        border-radius: 10px;
-                        overflow: hidden;
-                        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-                    }
-                    .card-image {
-                        width: 100%;
-                        height: 180px;
-                        background: #eee7df;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        color: #8b7f73;
-                        font-size: 12px;
-                        text-transform: uppercase;
-                        letter-spacing: 1px;
-                    }
-                    .card-image img {
-                        width: 100%;
-                        height: 100%;
-                        object-fit: cover;
-                    }
-                    .card-body {
-                        padding: 14px 16px 18px;
-                    }
-                    .card-title {
-                        font-size: 18px;
-                        margin: 0 0 6px;
-                    }
-                    .card-meta {
-                        font-size: 13px;
-                        color: #6b5f53;
-                    }
-                </style>
-            </head>
-            <body>
-                <h1 class="page-title">My Books</h1>
-                <div class="page-subtitle">
-                    Books where <t t-esc="partner.name"/> is listed as an author.
-                </div>
-
-                <t t-if="books">
-                    <div class="card-grid">
-                        <t t-foreach="books" t-as="book">
-                            <div class="card">
-                                <div class="card-image">
-                                    <t t-if="book.image">
-                                        <img t-att-src="image_data_uri(book.image)" alt="Cover"/>
-                                    </t>
-                                    <t t-else="">
-                                        No Cover
-                                    </t>
-                                </div>
-                                <div class="card-body">
-                                    <div class="card-title">
-                                        <t t-esc="book.title"/>
-                                    </div>
-                                    <div class="card-meta">
-                                        <t t-esc="book.date_published and book.date_published.strftime('%m/%d/%Y') or 'N/A'"/>
-                                    </div>
-                                    <div class="card-meta">
-                                        <t t-esc="book.publisher_id.name or 'Unknown Publisher'"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </t>
-                    </div>
-                </t>
-                <t t-else="">
-                    <div class="no-books">
-                        <p>No books linked to your contact.</p>
-                    </div>
-                </t>
-            </body>
-        </html>
-    </template>
+   
     
 </odoo>

@@ -57,7 +57,7 @@
         </field>
     </record>
 
-    <!-- Tree View -->
+    <!-- Tree View  rules 3-->
     <record id="view_library_management_tree" model="ir.ui.view">
         <field name="name">library.management.tree</field>
         <field name="model">library.management</field>
@@ -71,7 +71,7 @@
         </field>
     </record>
 
-    <!-- Search View with Filters -->
+    <!-- Search View with Filters rule 4 nag add narin ako search field and group by section -->
     <record id="view_library_management_search" model="ir.ui.view">
         <field name="name">library.management.search</field>
         <field name="model">library.management</field>

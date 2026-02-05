@@ -14,6 +14,6 @@ class ResPartnerMyBook(models.Model):
         'library_management_author_rel',
         'partner_id',
         'book_id',
-        string='My Book',
+        string='My Book', # part2 rule 1
         readonly=True,
     )

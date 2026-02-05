@@ -31,6 +31,7 @@ class LibraryController(http.Controller):
         }
         
         # Render enhanced template with filter data
+        #return request.render('library_management.library_books_template', {
         return request.render('library_management.library_books_enhanced_template', {
             'books': books,
             'publishers': publishers,
@@ -38,7 +39,7 @@ class LibraryController(http.Controller):
             'date_range': date_range,
         })
 
-    @http.route('/mybooks', type='http', auth='user', website=True)
+    @http.route('/mybooks', type='http', auth='user', website=True) #part2 rule 4
     def my_books(self, **kwargs):
         """Display books authored by the logged-in user's contact"""
         partner = request.env.user.partner_id

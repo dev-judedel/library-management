@@ -10,8 +10,9 @@ class LibraryManagement(models.Model):
     _rec_name = 'title'
 
     # Fields as per requirements
+    #rule 2
     image = fields.Image(string='Cover')
-    title = fields.Char(string='Title', required=True)
+    title = fields.Char(string='Title', required=True) # aalisin ung true pag need makita ung rules 7.1
     isbn = fields.Char(string='ISBN')
     active = fields.Boolean(string='Active', default=True)
     date_published = fields.Date(string='Date Published')
@@ -23,9 +24,13 @@ class LibraryManagement(models.Model):
         'partner_id',
         string='Authors',
     )
-    webpage_link = fields.Char(string='Wikipage Link')
+    webpage_link = fields.Char(string='Wikipage Link') # additional field for webpage link part 2
 
     # Method to check ISBN (called by button)
+    # Validation method for ISBN
+    #Create a function that will check/validate IF 
+    # ISBN is a number and is 13 digit 
+    #Then follow the validation instruction at number 7.
     def action_check_isbn(self):
         """Check ISBN validation when button is clicked"""
         self.ensure_one()
@@ -41,23 +46,28 @@ class LibraryManagement(models.Model):
             }
         }
 
-    # Validation method for ISBN
+  
     def _validate_isbn(self):
         """Validate ISBN format and length"""
         for record in self:
             # Check if ISBN is empty
+            #7.2
+            # raise ValidationError if you attempted to press Check ISBN button or saving the record and the ISBN field is empty ,
+            # raise a message “Please provide an ISBN for <bookname>
             if not record.isbn:
                 raise ValidationError(f"Please provide an ISBN for {record.title}")
             
             # Check if ISBN contains only digits
+            #7.3
             if not record.isbn.isdigit():
                 raise ValidationError("ISBN must be a digit")
-            
+            #7.3
             # Check if ISBN is exactly 13 digits
             if len(record.isbn) != 13:
                 raise ValidationError("ISBN must be 13 digit")
 
     # Validation for required title
+    #7.1
     @api.constrains('title')
     def _check_title(self):
         """Validate that title is provided"""
@@ -71,7 +81,7 @@ class LibraryManagement(models.Model):
         """Override create to validate ISBN"""
         records = super(LibraryManagement, self).create(vals_list)
         for record in records:
-            if record.isbn:  # Only validate if ISBN is provided
+            #if record.isbn:  # Only validate if ISBN is provided
                 record._validate_isbn()
         return records
 
@@ -81,6 +91,6 @@ class LibraryManagement(models.Model):
         result = super(LibraryManagement, self).write(vals)
         if 'isbn' in vals:
             for record in self:
-                if record.isbn:  # Only validate if ISBN is provided
+                #if record.isbn:  # Only validate if ISBN is provided
                     record._validate_isbn()
         return result
