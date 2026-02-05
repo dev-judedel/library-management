@@ -1,7 +1,22 @@
-version: '3.1'
 services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15
+    container_name: library_db
+    ports:
+      - "5432:5432" 
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+    restart: always
+
+  # Odoo 18 Web Application
   web:
     image: odoo:18.0
+    container_name: library_web
     depends_on:
       - db
     ports:
@@ -14,16 +29,8 @@ services:
       - HOST=db
       - USER=odoo
       - PASSWORD=odoo
-    command: -c /etc/odoo/odoo.conf --dev=all
-
-  db:
-    image: postgres:15
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_PASSWORD=odoo
-      - POSTGRES_USER=odoo
-    volumes:
-      - odoo-db-data:/var/lib/postgresql/data
+    restart: always
+    command: --dev=all  
 
 volumes:
   odoo-web-data:
