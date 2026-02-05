@@ -67,7 +67,7 @@ class LibraryManagement(models.Model):
                 raise ValidationError("ISBN must be 13 digit")
 
     # Validation for required title
-    #7.1
+    #7.1 conflict sa required=True sa title field need to remove ung true pag need makita ung rules 7.1
     @api.constrains('title')
     def _check_title(self):
         """Validate that title is provided"""
