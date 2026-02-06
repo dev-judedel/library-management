@@ -16,14 +16,17 @@
     'author': 'Your Name',
     'website': 'https://www.example.com',
     'depends': ['base', 'web', 'website', 'contacts'],
+
+    'icon': '/library_management/static/description/icon.png',
+    
     'data': [
         'security/ir.model.access.csv',
         'data/library_management_demo.xml',
         'views/library_management_views.xml',
         'views/library_management_menus.xml',
-        'views/library_books_template_clean.xml',  # Clean version with external CSS/JS
+        'views/library_books_template_clean.xml',  # Clean version with external CSS/JS mybook
         #'views/library_books_template.xml',  # Old version with inline styles
-        'views/library_books_enhanced_template.xml',
+        'views/library_books_enhanced_template.xml',  
         'views/res_partner_views.xml',
     ],
     'assets': {
