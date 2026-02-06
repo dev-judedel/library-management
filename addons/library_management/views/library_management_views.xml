@@ -33,6 +33,7 @@
 
                         <group>
                             <field name="isbn"
+                                class="o_isbn_counter_target"
                                 placeholder="Enter 13-digit ISBN"
                                 help="Enter the ISBN number (13 digits)."/>
 
@@ -44,8 +45,9 @@
                                 placeholder="e.g. https://en.wikipedia.org/wiki/PHP"
                                 help="Enter the Wikipedia or reference webpage link for this book."/>
 
+                            <div class="o_form_label">Cover</div>
                             <field name="image"
-                                string="Cover"
+                                nolabel="1"
                                 widget="image"
                                 options="{'size': [400, 400], 'preview_image': 'image'}"
                                 help="Upload the book cover image."/>

@@ -32,6 +32,10 @@
             'library_management/static/src/css/book_details.css',
             'library_management/static/src/js/book_details.js',
         ],
+        'web.assets_backend': [
+            'library_management/static/src/js/isbn_mask_backend.js',
+            'library_management/static/src/js/save_toast_backend.js',
+        ],
     },
     'demo': [
         'data/library_management_demo.xml',
