@@ -6,17 +6,23 @@
         <field name="name">res.partner.form.my.book</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority" eval="10000"/>
         <field name="arch" type="xml">
-            <!-- Add My Book field after the Tags field -->
-            <xpath expr="//field[@name='category_id']" position="after">
-                <field name="my_book_ids" string="My Book">
-                    <list string="My Book">
-                        <field name="title"/>
-                        <field name="author_ids" widget="many2many_tags"/>
-                        <field name="publisher_id"/>
-                        <field name="date_published"/>
-                    </list>
-                </field>
+            <!-- Ensure My Books tab exists, then move it to the end (after Internal Notes if it's last) -->
+            <xpath expr="//notebook" position="inside">
+                <page string="My Books" name="my_books">
+                    <field name="my_book_ids" string="My Books">
+                        <list string="My Books">
+                            <field name="title"/>
+                            <field name="author_ids" widget="many2many_tags"/>
+                            <field name="publisher_id"/>
+                            <field name="date_published"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//notebook/page[last()]" position="after">
+                <page name="my_books" position="move"/>
             </xpath>
         </field>
     </record>

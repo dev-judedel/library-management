@@ -12,7 +12,7 @@ class LibraryManagement(models.Model):
     # Fields as per requirements
     #rule 2
     image = fields.Image(string='Cover')
-    title = fields.Char(string='Title', required=True) # aalisin ung true pag need makita ung rules 7.1
+    title = fields.Char(string='Title' , default='Field') # aalisin ung true pag need makita ung rules 7.1
     isbn = fields.Char(string='ISBN')
     active = fields.Boolean(string='Active', default=True)
     date_published = fields.Date(string='Date Published')
